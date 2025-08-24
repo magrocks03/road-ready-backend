@@ -33,6 +33,36 @@ namespace RoadReadyAPI.Services
             _logger = logger;
         }
 
+        // --- IMPLEMENTATION OF NEW METHODS ---
+        public async Task<PagedResultDTO<ReturnBookingDTO>> GetAllBookingsAsync(PaginationDTO pagination)
+        {
+            _logger.LogInformation("Fetching paginated list of all bookings for operations.");
+            var totalCount = await _bookingRepository.GetTotalAllBookingsCountAsync();
+            var bookings = await _bookingRepository.GetPagedAllBookingsAsync(pagination);
+            var bookingDtos = _mapper.Map<List<ReturnBookingDTO>>(bookings);
+            return new PagedResultDTO<ReturnBookingDTO>
+            {
+                Items = bookingDtos,
+                TotalCount = totalCount,
+                PageNumber = pagination.PageNumber,
+                PageSize = pagination.PageSize
+            };
+        }
+
+        public async Task<PagedResultDTO<ReturnIssueDTO>> GetAllIssuesAsync(PaginationDTO pagination)
+        {
+            _logger.LogInformation("Fetching paginated list of all issues for operations.");
+            var totalCount = await _issueRepository.GetTotalAllIssuesCountAsync();
+            var issues = await _issueRepository.GetPagedAllIssuesAsync(pagination);
+            var issueDtos = _mapper.Map<List<ReturnIssueDTO>>(issues);
+            return new PagedResultDTO<ReturnIssueDTO>
+            {
+                Items = issueDtos,
+                TotalCount = totalCount,
+                PageNumber = pagination.PageNumber,
+                PageSize = pagination.PageSize
+            };
+        }
         public async Task<ReturnVehicleDTO> UpdateVehicleStatusAsync(int vehicleId, UpdateVehicleStatusDTO updateStatusDTO)
         {
             _logger.LogInformation($"Agent/Admin updating status for vehicle ID: {vehicleId}");

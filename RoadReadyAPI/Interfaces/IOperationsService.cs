@@ -28,5 +28,9 @@ namespace RoadReadyAPI.Interfaces
         /// <param name="updateStatusDTO">The DTO containing the new status and admin notes.</param>
         /// <returns>The updated issue's details.</returns>
         Task<ReturnIssueDTO> UpdateIssueStatusAsync(int issueId, UpdateIssueStatusDTO updateStatusDTO);
+
+        // --- NEW METHODS ADDED HERE ---
+        Task<PagedResultDTO<ReturnBookingDTO>> GetAllBookingsAsync(PaginationDTO pagination);
+        Task<PagedResultDTO<ReturnIssueDTO>> GetAllIssuesAsync(PaginationDTO pagination);
     }
 }

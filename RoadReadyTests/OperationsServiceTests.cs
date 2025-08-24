@@ -51,6 +51,52 @@ namespace RoadReadyTests
             );
         }
 
+        #region GetAllBookingsAsync Tests
+
+        [Test]
+        public async Task GetAllBookingsAsync_WhenBookingsExist_ReturnsPaginatedResult()
+        {
+            // Arrange
+            var pagination = new PaginationDTO();
+            var bookings = new List<Booking> { new Booking { Id = 1, Vehicle = new Vehicle(), Status = new BookingStatus(), BookingExtras = new List<BookingExtra>() } };
+
+            _bookingRepositoryMock.Setup(r => r.GetTotalAllBookingsCountAsync()).ReturnsAsync(1);
+            _bookingRepositoryMock.Setup(r => r.GetPagedAllBookingsAsync(pagination)).ReturnsAsync(bookings);
+
+            // Act
+            var result = await _operationsService.GetAllBookingsAsync(pagination);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.TotalCount);
+            Assert.AreEqual(1, result.Items.Count);
+        }
+
+        #endregion
+
+        #region GetAllIssuesAsync Tests
+
+        [Test]
+        public async Task GetAllIssuesAsync_WhenIssuesExist_ReturnsPaginatedResult()
+        {
+            // Arrange
+            var pagination = new PaginationDTO();
+            var issues = new List<Issue> { new Issue { Id = 1, Booking = new Booking { User = new User(), Vehicle = new Vehicle() } } };
+
+            _issueRepositoryMock.Setup(r => r.GetTotalAllIssuesCountAsync()).ReturnsAsync(1);
+            _issueRepositoryMock.Setup(r => r.GetPagedAllIssuesAsync(pagination)).ReturnsAsync(issues);
+
+            // Act
+            var result = await _operationsService.GetAllIssuesAsync(pagination);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.TotalCount);
+            Assert.AreEqual(1, result.Items.Count);
+        }
+
+        #endregion
+
         #region UpdateVehicleStatusAsync Tests
 
         [Test]
